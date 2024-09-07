@@ -5,7 +5,7 @@
     "java.format.settings.url": "./eclipse-java-google-style.xml",
     "editor.rulers": [
         {
-            "column": 100
+            "column": 120
         }
 
     ]
