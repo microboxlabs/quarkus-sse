@@ -7,6 +7,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 @Path("/api/v1/events")
 @Produces(MediaType.SERVER_SENT_EVENTS)
@@ -15,7 +19,13 @@ public class EventEmitterResource {
 
     @POST
     @Path("/emit")
-    public void emitEvent() {
+    @Operation(summary = "Emit a new event", description = "Post new events for SSE broadcasting to clients. This endpoint allows sending a single event that will be broadcast to all connected SSE clients.")
+    @APIResponses(value = {
+            @APIResponse(responseCode = "202", description = "Event accepted for broadcasting"),
+            @APIResponse(responseCode = "400", description = "Invalid event data")
+    })
+    public void emitEvent(
+            @RequestBody(description = "The event data to be broadcast", required = true) EventData eventData) {
         // Implementation for emitting a single event
     }
 
