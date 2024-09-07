@@ -8,7 +8,7 @@ jobs:
   Quarkus-Native-Build:
     runs-on: ubuntu-latest
     container:
-      image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image:22.3-java17
+      image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21
 
     steps:
     - name: Checkout repository
