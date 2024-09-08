@@ -52,39 +52,24 @@ public class EventEmitterResource {
         return events;
     }
 
-    @POST
-    @Path("/broadcast")
-    public void broadcastEvent() {
-        // Implementation for broadcasting events to multiple subscribers
-    }
-
     @GET
-    @Path("/broadcast-stream")
-    public void streamBroadcastEvents() {
-        // Implementation for clients to subscribe to broadcasted events
+    @Path("/stream/{eventType}")
+    @RestStreamElementType(MediaType.APPLICATION_JSON)
+    public Multi<EventData> streamEventByType(@PathParam("eventType") String eventType) {
+        return events.filter(event -> event.getEventType().equals(eventType));
     }
 
     @POST
-    @Path("/broadcast/event/{eventId}")
-    public void broadcastEventById(@PathParam("eventId") String eventId) {
-        // Implementation for broadcasting an event by its event ID
-    }
-
-    @GET
-    @Path("/broadcast/event/{eventId}")
-    public void streamEventById(@PathParam("eventId") String eventId) {
-        // Implementation for clients to subscribe to a specific event ID
-    }
-
-    @POST
-    @Path("/broadcast/tenant/{tenantId}")
-    public void broadcastEventForTenant(@PathParam("tenantId") String tenantId) {
+    @Path("/tenant/{tenantId}/stream")
+    public void streamEventsForTenant(@PathParam("tenantId") String tenantId) {
         // Implementation for broadcasting events in a multi-tenant environment
     }
 
     @GET
-    @Path("/broadcast/tenant/{tenantId}/stream")
-    public void streamEventsForTenant(@PathParam("tenantId") String tenantId) {
+    @Path("/tenant/{tenantId}/stream/{eventType}")
+    public void streamEventsForTenant( //
+            @PathParam("tenantId") String tenantId,
+            @PathParam("eventType") String eventType) {
         // Implementation for clients to subscribe to events for a specific tenant
     }
 }
