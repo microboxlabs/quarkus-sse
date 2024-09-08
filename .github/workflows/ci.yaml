@@ -15,8 +15,8 @@ jobs:
       - name: Build Native Image
         uses: docker://quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21
         with:
-          args: |
-            /bin/bash -c "./mvnw package -Pnative"
+          entrypoint: /bin/bash
+          args: -c "./mvnw package -Pnative"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
