@@ -76,4 +76,16 @@ public class EventData {
     public void setMetadata(Object metadata) {
         this.metadata = metadata;
     }
+
+    @Override
+    public String toString() {
+        return "EventData{" +
+                "id='" + id + '\'' +
+                ", eventType='" + eventType + '\'' +
+                ", payload=" + payload +
+                ", timestamp=" + timestamp +
+                ", metadata=" + metadata +
+                '}';
+    }
+
 }
