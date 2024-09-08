@@ -7,15 +7,15 @@ on: [push, pull_request]
 jobs:
   Quarkus-Native-Build:
     runs-on: ubuntu-latest
-    container:
-      image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build Native Image
-        run: ./mvnw package -Pnative
+        uses: docker://quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21
+        with:
+          args: ./mvnw package -Pnative
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -23,8 +23,14 @@ jobs:
           name: sse-server
           path: target/*-runner
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
+
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3.3.0
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
