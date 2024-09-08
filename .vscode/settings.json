@@ -1,12 +1,14 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "editor.formatOnSave": true,
+    "[yaml]": {
+        "editor.formatOnSave": false
+    },
     "editor.wordWrap": "off",
     "java.format.settings.url": "./eclipse-java-google-style.xml",
     "editor.rulers": [
         {
             "column": 120
         }
-
     ]
 }
