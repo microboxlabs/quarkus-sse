@@ -10,6 +10,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -40,9 +42,10 @@ public class EventEmitterResource {
             @APIResponse(responseCode = "202", description = "Event accepted for broadcasting"),
             @APIResponse(responseCode = "400", description = "Invalid event data")
     })
-    public void emitEvent(
+    public Response emitEvent(
             @RequestBody(description = "The event data to be broadcast", required = true) EventData eventData) {
         eventEmitter.sendAndForget(eventData);
+        return Response.accepted().build();
     }
 
     @GET
