@@ -64,3 +64,12 @@ If you want to learn more about building native executables, please consult <htt
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+## Health and Liveness Endpoints
+
+This Quarkus application includes the smallrye-health extension, which automatically exposes the following health-related endpoints:
+
+- `/q/health/live`: Indicates if the application is up and running.
+- `/q/health/ready`: Shows if the application is ready to serve requests.
+- `/q/health/started`: Confirms if the application has started.
+- `/q/health`: Aggregates all health check procedures in the application.
