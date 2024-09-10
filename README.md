@@ -3,7 +3,7 @@
 Quarkus-SSE is a high-performance server using Quarkus, designed for real-time event streaming with Server-Sent Events (SSE). Its reactive architecture delivers fast, scalable solutions for cloud-native apps, microservices, and real-time notifications, optimizing development and resource use.
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Build Status](https://github.com/microboxlabs/quarkus-sse/workflows/CI/badge.svg)](https://github.com/microboxlabs/quarkus-sse/actions)
+![Build Status](https://github.com/microboxlabs/quarkus-sse/actions/workflows/ci.yaml/badge.svg)
 
 ## Table of Contents
 
