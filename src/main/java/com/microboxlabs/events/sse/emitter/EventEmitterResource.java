@@ -12,6 +12,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -30,11 +33,12 @@ public class EventEmitterResource {
     @Channel("events")
     MutinyEmitter<EventData> eventEmitter;
 
+    Map<String, MutinyEmitter<EventData>> tenantEventEmitters = new ConcurrentHashMap<>();
+
     @POST
     @Path("/emit")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation( //
-            summary = "Emit a new event", //
+    @Operation(summary = "Emit a new event", //
             description = "Post new events for SSE broadcasting to clients. This endpoint allows sending a single "
                     + "event that will be broadcast to all connected SSE clients." //
     )
@@ -50,6 +54,7 @@ public class EventEmitterResource {
 
     @GET
     @Path("/stream")
+    @Operation(summary = "Stream all events", description = "Stream all events that have been emitted to the server.")
     @RestStreamElementType(MediaType.APPLICATION_JSON)
     public Multi<EventData> streamEvents() {
         return events;
@@ -57,22 +62,26 @@ public class EventEmitterResource {
 
     @GET
     @Path("/stream/{eventType}")
+    @Operation(summary = "Stream events by type", description = "Stream events that match a specific event type.")
     @RestStreamElementType(MediaType.APPLICATION_JSON)
     public Multi<EventData> streamEventByType(@PathParam("eventType") String eventType) {
         return events.filter(event -> event.getEventType().equals(eventType));
     }
 
-    @POST
+    @GET
     @Path("/tenant/{tenantId}/stream")
-    public void streamEventsForTenant(@PathParam("tenantId") String tenantId) {
-        // Implementation for broadcasting events in a multi-tenant environment
+    @Operation(summary = "Stream events for a specific tenant", description = "Stream events for a specific tenant.")
+    public Multi<EventData> streamEventsForTenant(@PathParam("tenantId") String tenantId) {
+        return events.filter(event -> event.getTenantId().equals(tenantId));
     }
 
     @GET
     @Path("/tenant/{tenantId}/stream/{eventType}")
-    public void streamEventsForTenant( //
+    @Operation(summary = "Stream events for a specific tenant and type", //
+            description = "Stream events for a specific tenant and type.")
+    public Multi<EventData> streamEventsForTenant( //
             @PathParam("tenantId") String tenantId,
             @PathParam("eventType") String eventType) {
-        // Implementation for clients to subscribe to events for a specific tenant
+        return events.filter(event -> event.getTenantId().equals(tenantId) && event.getEventType().equals(eventType));
     }
 }
