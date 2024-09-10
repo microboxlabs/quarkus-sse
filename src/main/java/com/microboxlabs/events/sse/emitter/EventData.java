@@ -26,8 +26,18 @@ public class EventData {
     @Schema(description = "Optional metadata associated with the event")
     private Object metadata;
 
+    @Schema(description = "Optional tenant identifier", example = "tenant-123")
+    private String tenantId;
+
     // Constructors
     public EventData() {
+    }
+
+    public EventData(String eventType, Object payload, String tenantId) {
+        this.eventType = eventType;
+        this.payload = payload;
+        this.tenantId = tenantId;
+        this.timestamp = Instant.now();
     }
 
     public EventData(String eventType, Object payload) {
@@ -75,6 +85,14 @@ public class EventData {
 
     public void setMetadata(Object metadata) {
         this.metadata = metadata;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     @Override
