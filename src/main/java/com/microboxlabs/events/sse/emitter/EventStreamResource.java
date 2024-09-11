@@ -11,10 +11,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.logging.Logger;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -25,6 +24,7 @@ import org.jboss.resteasy.reactive.RestStreamElementType;
 @ApplicationScoped
 @Path("/events")
 public class EventStreamResource {
+    private static final Logger logger = Logger.getLogger(EventStreamResource.class.getName());
 
     @Inject
     @Channel("events")
