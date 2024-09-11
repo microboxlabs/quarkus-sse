@@ -24,7 +24,7 @@ import org.jboss.resteasy.reactive.RestStreamElementType;
 
 @ApplicationScoped
 @Path("/events")
-public class EventEmitterResource {
+public class EventStreamResource {
 
     @Inject
     @Channel("events")
