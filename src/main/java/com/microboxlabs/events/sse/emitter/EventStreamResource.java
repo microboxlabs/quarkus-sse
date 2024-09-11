@@ -11,6 +11,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -48,7 +49,12 @@ public class EventStreamResource {
     })
     public Response emitEvent(
             @RequestBody(description = "The event data to be broadcast", required = true) EventData eventData) {
-        eventEmitter.sendAndForget(eventData);
+        if (eventEmitter.hasRequests()) {
+            eventEmitter.sendAndForget(eventData);
+        } else {
+            logger.warning("No subscribers for event: " + eventData);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
         return Response.accepted().build();
     }
 
