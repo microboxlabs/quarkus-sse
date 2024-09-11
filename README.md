@@ -44,6 +44,16 @@ This Quarkus application includes the smallrye-health extension, which automatic
 - `/q/health/started`: Confirms if the application has started.
 - `/q/health`: Aggregates all health check procedures in the application.
 
+### Event Stream Endpoints
+
+The application provides the following endpoints for event emission and streaming:
+
+- `POST /events/emit`: Emit a new event for broadcasting to all clients.
+- `GET /events/stream`: Stream all events that have been emitted to the server.
+- `GET /events/stream/{eventType}`: Stream events that match a specific event type.
+- `GET /events/tenant/{tenantId}/stream`: Stream events for a specific tenant.
+- `GET /events/tenant/{tenantId}/stream/{eventType}`: Stream events for a specific tenant and event type.
+
 ## Contributing
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
