@@ -3,6 +3,6 @@ package com.microboxlabs;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
 @QuarkusIntegrationTest
-class GreetingResourceIT extends GreetingResourceTest {
+class EventStreamResourceIT extends EventStreamResourceTest {
     // Execute the same tests but in packaged mode.
 }
