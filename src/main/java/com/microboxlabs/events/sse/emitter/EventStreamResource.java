@@ -11,10 +11,10 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
+import jakarta.ws.rs.core.Response.Status;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.logging.Logger;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -25,6 +25,7 @@ import org.jboss.resteasy.reactive.RestStreamElementType;
 @ApplicationScoped
 @Path("/events")
 public class EventStreamResource {
+    private static final Logger logger = Logger.getLogger(EventStreamResource.class.getName());
 
     @Inject
     @Channel("events")
@@ -43,13 +44,22 @@ public class EventStreamResource {
                     + "event that will be broadcast to all connected SSE clients." //
     )
     @APIResponses(value = {
-            @APIResponse(responseCode = "202", description = "Event accepted for broadcasting"),
+            @APIResponse(responseCode = "202", description = "Event accepted for processing. " +
+                    "If subscribers are available, it will be broadcast immediately; otherwise, " +
+                    "it may be queued or discarded based on the current implementation."),
             @APIResponse(responseCode = "400", description = "Invalid event data")
     })
     public Response emitEvent(
             @RequestBody(description = "The event data to be broadcast", required = true) EventData eventData) {
-        eventEmitter.sendAndForget(eventData);
-        return Response.accepted().build();
+        if (eventEmitter.hasRequests()) {
+            eventEmitter.sendAndForget(eventData);
+            return Response.accepted().build();
+        } else {
+            logger.warning("No subscribers for event: " + eventData);
+            return Response.accepted()
+                    .entity("Event accepted, but no subscribers are currently available to receive it")
+                    .build();
+        }
     }
 
     @GET
