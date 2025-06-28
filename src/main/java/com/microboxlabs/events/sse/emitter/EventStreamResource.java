@@ -81,6 +81,7 @@ public class EventStreamResource {
     @GET
     @Path("/tenant/{tenantId}/stream")
     @Operation(summary = "Stream events for a specific tenant", description = "Stream events for a specific tenant.")
+    @RestStreamElementType(MediaType.APPLICATION_JSON)
     public Multi<EventData> streamEventsForTenant(@PathParam("tenantId") String tenantId) {
         return events.filter(event -> event.getTenantId().equals(tenantId));
     }
@@ -89,7 +90,8 @@ public class EventStreamResource {
     @Path("/tenant/{tenantId}/stream/{eventType}")
     @Operation(summary = "Stream events for a specific tenant and type", //
             description = "Stream events for a specific tenant and type.")
-    public Multi<EventData> streamEventsForTenant( //
+    @RestStreamElementType(MediaType.APPLICATION_JSON)
+    public Multi<EventData> streamEventsByTypeForTenant( //
             @PathParam("tenantId") String tenantId,
             @PathParam("eventType") String eventType) {
         return events.filter(event -> event.getTenantId().equals(tenantId) && event.getEventType().equals(eventType));
